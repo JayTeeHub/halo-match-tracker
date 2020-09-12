@@ -1,5 +1,7 @@
 # HaloMatchTracker
 
+For a given embedded YouTube HCS match the stats of the game will be displayed, in near real-time, giving you a detailed breakdown as the game unfolds!
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.0.
 
 ## Development server
