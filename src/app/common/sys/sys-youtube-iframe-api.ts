@@ -31,12 +31,16 @@ export class SysYouTubeIframeApi {
     private readonly iframeId: string;
 
     /** Holds the YouTube iFrame API instance after it has been loaded. */
-    private readonly youTubeIframe: YouTubeIframe;
+    private youTubeIframe: YouTubeIframe;
 
     /** Create instance and load the YouTube iframe API. */
     constructor(htmlId: string) {
         this.iframeId = htmlId;
-        /** TODO (Jordan Turner - 2020-09-20: Load API */
+
+        // Load the iframe API
+        YouTubeIframeLoader.load((YT: YouTubeIframe) => {
+            this.youTubeIframe = YT;
+        });
     }
 
     /*
