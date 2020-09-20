@@ -16,17 +16,18 @@ module.exports = function (config) {
             clearContext: false // leave Jasmine Spec Runner output visible in browser
         },
         coverageIstanbulReporter: {
-            dir: require("path").join(__dirname, "./coverage/halo-match-tracker"),
+            dir: require("path").join(__dirname, "coverage"),
             reports: ["html", "lcovonly", "text-summary"],
             fixWebpackSourcePaths: true
         },
+        autoWatch: true,
         reporters: ["progress", "kjhtml"],
         port: 9876, // Karma web server port
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: true,
         browsers: ["ChromeHeadless"],
-        // singleRun: false, // Uncomment so that Karma captures browsers, runs the tests and exits
+        singleRun: false, // Uncomment so that Karma captures browsers, runs the tests and exits
         restartOnFileChange: true
     });
 };
