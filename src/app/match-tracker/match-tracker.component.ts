@@ -10,14 +10,14 @@ import { Component, OnInit } from '@angular/core';
  * Dependencies
  *
  */
-import { YouTubeIframe, YouTubeIframePlayer } from '../common/interfaces/youtube-iframe.interface';
+import { YouTubeIframePlayer } from '../common/interfaces/youtube-iframe.interface';
+import { SysYouTubeIframeApi } from '../common/sys/sys-youtube-iframe-api';
 
 /*
  *
  * Third-Party Dependencies
  *
  */
-import * as YouTubeIframeLoader from 'youtube-iframe';
 
 /** Parent component for Match Tracker. This provides a high-level, container, UI for which HCS
  * video and stats (Childern) will live in. */
@@ -33,13 +33,14 @@ export class MatchTrackerComponent implements OnInit {
      *
      */
 
-    /** Instance of YouTube embedded video player that defines:
-     * - video to play
-     * - width & height of iFrame
-     * - event methods that will be trigged by actions taken on the video player (ie. start, pause,
-     *   etc..)
+    /*
+     *
+     * Private Members
+     *
      */
-    public player: YouTubeIframePlayer;
+
+    /** Access the YouTube iframe API to load the HCS match YouTube video. */
+    private sysYouTubeIframeApi: SysYouTubeIframeApi;
 
     /*
      *
@@ -53,17 +54,5 @@ export class MatchTrackerComponent implements OnInit {
      * Initalization
      *
      */
-    ngOnInit(): void {
-        YouTubeIframeLoader.load((YT: YouTubeIframe) => {
-            this.player = new YT.Player('player', {
-                videoId: 'M7lc1UVf-VE',
-                height: '390',
-                width: '640',
-                events: {
-                    onReady: event => {},
-                    onStateChange: event => {}
-                }
-            });
-        });
-    }
+    ngOnInit(): void {}
 }
