@@ -12,6 +12,27 @@ import { YouTubeIframe, YouTubeIframePlayer } from '../interfaces/youtube-iframe
  */
 import { Observable, Subscriber } from 'rxjs';
 
+/*
+ *
+ * Interfaces
+ *
+ */
+
+/** Configuration paramters passed into the Class constructor and used to establish the YouTube
+ * iframe API */
+export interface ApiConfig {
+    /** HTML markup id of where in the DOM the YouTube iframe palyer will be loaded */
+    iframeId: string;
+    /** Width of the YouTube palyer */
+    width: string;
+    /** Height of the YouTube player */
+    height: string;
+    /** Event handler called by the YouTube player once the player is ready. */
+    onReadyEvent: Function;
+    /** Event handler called by the YouTube player when the state of the video changes (ie.
+     * PAUSED, PLAYING, ENDED, etc...). */
+    onStateChangeEvent: Function;
+}
 /** System level service that is used to load and mointor a YouTube player in the API throught the
  * YouTube iframe API. */
 export class SysYouTubeIframeApi {
@@ -20,6 +41,9 @@ export class SysYouTubeIframeApi {
      * Public Members
      *
      */
+
+    /** Instance of YouTube video player, used to control/mointor the video player. */
+    public player: YouTubeIframePlayer;
 
     /*
      *
@@ -30,41 +54,34 @@ export class SysYouTubeIframeApi {
     /** YouTube API link reference */
     private readonly apiSource = 'https://www.youtube.com/iframe_api';
 
-    /** HTML id used by the YouTube API to render the iframe. */
-    private readonly iframeId: string;
+    /** Holds config passed into constructor */
+    private config: ApiConfig;
 
     /** Holds the YouTube iFrame API instance after it has been loaded. */
     private youTubeIframe: YouTubeIframe;
 
-    /** Instance of YouTube video player, used to control/mointor the video player. */
-    private player: YouTubeIframePlayer;
+    /*
+     *
+     * Getter/Setter Accessors
+     *
+     */
 
-    /** Height of the YouTube player */
-    private readonly height: string;
-
+    /** HTML markup id of where in the DOM the YouTube iframe palyer will be loaded */
+    get iframeId(): string {
+        return this.config.iframeId;
+    }
     /** Width of the YouTube palyer */
-    private readonly width: string;
-
-    /** Event handler called by the YouTube player once the player is ready. */
-    private readonly onReadyEvent: Function;
-
-    /** Event handler called by the YouTube player when the state of the video changes (ie.
-     * PAUSED, PLAYING, ENDED, etc...). */
-    private readonly onStateChangeEvent: Function;
+    get width(): string {
+        return this.config.width;
+    }
+    /** Height of the YouTube player */
+    get height(): string {
+        return this.config.height;
+    }
 
     /** Create instance of YouTube iframe API passing in parameters needed to establish the API and player. */
-    constructor(
-        htmlId: string,
-        width: string,
-        height: string,
-        onReadyEvent: Function,
-        onStateChangeEvent: Function
-    ) {
-        this.iframeId = htmlId;
-        this.width = width;
-        this.height = height;
-        this.onReadyEvent = onReadyEvent;
-        this.onStateChangeEvent = onStateChangeEvent;
+    constructor(config: ApiConfig) {
+        this.config = config;
     }
 
     /*
@@ -99,17 +116,21 @@ export class SysYouTubeIframeApi {
      */
     public loadVideo = (videoId: string): void => {
         if (this.hasApiBeenLoaded() && this.youTubeIframe) {
-            this.player = new this.youTubeIframe.Player(this.iframeId, {
+            this.player = new this.youTubeIframe.Player(this.config.iframeId, {
                 videoId: videoId,
-                height: this.height,
-                width: this.width,
+                height: this.config.height,
+                width: this.config.width,
                 events: {
-                    onReady: this.onReadyEvent,
-                    onStateChange: this.onStateChangeEvent
+                    onReady: this.config.onReadyEvent,
+                    // onReady: event => {
+                    //     console.log('event: %o', event);
+                    // },
+                    onStateChange: this.config.onStateChangeEvent
                 }
             });
         } else {
             console.error('The YouTube iframe API has not been loaded');
+            throw 'The YouTube iframe API has not been loaded';
         }
     };
 

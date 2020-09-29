@@ -3,7 +3,7 @@
  * Dependencies
  *
  */
-import { SysYouTubeIframeApi } from './sys-youtube-iframe-api';
+import { SysYouTubeIframeApi, ApiConfig } from './sys-youtube-iframe-api';
 
 /*
  *
@@ -13,24 +13,20 @@ import { SysYouTubeIframeApi } from './sys-youtube-iframe-api';
 import { switchMap } from 'rxjs/operators';
 
 describe('SysYouTubeIframeApi', () => {
-    const mockHtmlId: string = `player`;
-    const mockWidth: string = '640';
-    const mockHeight: string = '390';
     const mockVideoId: string = 'M7lc1UVf-VE';
-    const mockOnReadyEvent: Function = () => {};
-    const mockOnStateChangeEvent: Function = () => {};
+    const mockApiConfig: ApiConfig = {
+        iframeId: 'player',
+        width: '640',
+        height: '390',
+        onReadyEvent: () => {},
+        onStateChangeEvent: () => {}
+    };
 
     const youtubeIframeApi = 'https://www.youtube.com/iframe_api';
 
     it('should load the YouTube API', done => {
         // Arrange
-        const sysYouTubeIframeApi = new SysYouTubeIframeApi(
-            mockHtmlId,
-            mockWidth,
-            mockHeight,
-            mockOnReadyEvent,
-            mockOnStateChangeEvent
-        );
+        const sysYouTubeIframeApi = new SysYouTubeIframeApi(mockApiConfig);
 
         // Act
         sysYouTubeIframeApi.loadApi$().subscribe(() => {
@@ -48,13 +44,7 @@ describe('SysYouTubeIframeApi', () => {
 
     it('should return right away if the YouTube API has already been loaded', done => {
         // Arrange
-        const sysYouTubeIframeApi = new SysYouTubeIframeApi(
-            mockHtmlId,
-            mockWidth,
-            mockHeight,
-            mockOnReadyEvent,
-            mockOnStateChangeEvent
-        );
+        const sysYouTubeIframeApi = new SysYouTubeIframeApi(mockApiConfig);
 
         // Act
         sysYouTubeIframeApi
@@ -73,13 +63,7 @@ describe('SysYouTubeIframeApi', () => {
 
     it('should load a YouTube video into an iframe', done => {
         // Arrange
-        const sysYouTubeIframeApi = new SysYouTubeIframeApi(
-            mockHtmlId,
-            mockWidth,
-            mockHeight,
-            mockOnReadyEvent,
-            mockOnStateChangeEvent
-        );
+        const sysYouTubeIframeApi = new SysYouTubeIframeApi(mockApiConfig);
 
         // Act
         sysYouTubeIframeApi.loadApi$().subscribe(() => {
@@ -91,14 +75,14 @@ describe('SysYouTubeIframeApi', () => {
 
             // Assert
             expect(<any>sysYouTubeIframeApi['youTubeIframe'].Player).toHaveBeenCalledWith(
-                mockHtmlId,
+                mockApiConfig.iframeId,
                 {
                     videoId: mockVideoId,
-                    height: mockHeight,
-                    width: mockWidth,
+                    height: mockApiConfig.height,
+                    width: mockApiConfig.width,
                     events: {
-                        onReady: mockOnReadyEvent,
-                        onStateChange: mockOnStateChangeEvent
+                        onReady: mockApiConfig.onReadyEvent,
+                        onStateChange: mockApiConfig.onStateChangeEvent
                     }
                 }
             );
@@ -110,19 +94,16 @@ describe('SysYouTubeIframeApi', () => {
 
     it('should console an error when trying to load a video without loading the API', () => {
         // Arrange
-        const sysYouTubeIframeApi = new SysYouTubeIframeApi(
-            mockHtmlId,
-            mockWidth,
-            mockHeight,
-            mockOnReadyEvent,
-            mockOnStateChangeEvent
-        );
+        const sysYouTubeIframeApi = new SysYouTubeIframeApi(mockApiConfig);
         spyOn(console, 'error');
 
         // Act
-        sysYouTubeIframeApi.loadVideo(mockVideoId);
+        try {
+            sysYouTubeIframeApi.loadVideo(mockVideoId);
+        } catch (e) {}
 
         // Assert
+        expect(sysYouTubeIframeApi.loadVideo).toThrow('The YouTube iframe API has not been loaded');
         expect(console.error).toHaveBeenCalledWith('The YouTube iframe API has not been loaded');
     });
 });
