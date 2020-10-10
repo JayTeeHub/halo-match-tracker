@@ -1,13 +1,10 @@
 /** Dependencies */
 import { MatchWatcher } from './match-watcher';
 
-/** Third-Party Dependencies */
-import { Observable, Subscriber, interval } from 'rxjs';
-
 describe('MatchWatcher', () => {
     const clock = jasmine.clock();
 
-    fit('should increase the time elapsed on each interval of the watcher', () => {
+    it('should increase the time elapsed on each interval of the watcher', () => {
         // Arrange
         const matchWatcher = new MatchWatcher();
         const intervalPeriod = matchWatcher['watcherSpeed'];

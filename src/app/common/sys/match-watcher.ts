@@ -1,5 +1,6 @@
 /** Third-Party Dependencies */
-import { Observable, Subscriber, Subscription } from 'rxjs';
+import { interval, Observable, Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 /** Used to track how much time has passed in the HCS match and to track when HCS match events
  * occur (ie. game start, game end, game event, etc..). */
@@ -29,7 +30,7 @@ export class MatchWatcher {
 
     /** Amount of time, in seconds, that has elapsed in the HCS match. Used to check if HCS match events are
      * occuring. */
-    private _time: number;
+    private _time: number = 0;
 
     /*
      *
@@ -53,11 +54,18 @@ export class MatchWatcher {
 
     /** Start the HCS match watcher */
     public start = (): void => {
-        /** TODO (Jordan Turner - 2020-10-10: Assign a rxjs interval to the watcher$ */
-        /** TODO (Jordan Turner - 2020-10-10: The interval should do the following:
-         * - Increase the time elapsed of the HCS match
-         * - Check if an HCS event has occured
-         */
+        this.watcher$ = interval(this.watcherSpeed).pipe(
+            tap(count => {
+                // Increase the time that has elapsed in the HCS match
+                this._time += this.watcherSpeed;
+
+                /** TODO (Jordan Turner - 2020-10-10: Check if an HCS event has occured */
+            })
+        );
+
+        // Start the interval & capture the subscription so that we can stop the interval at a later
+        // point in time.
+        this.watcherSubscription = this.watcher$.subscribe();
     };
 
     /** Pause the HCS match watcher */
