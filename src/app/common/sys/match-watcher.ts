@@ -54,14 +54,7 @@ export class MatchWatcher {
 
     /** Start the HCS match watcher */
     public start = (): void => {
-        this.watcher$ = interval(this.watcherSpeed).pipe(
-            tap(count => {
-                // Increase the time that has elapsed in the HCS match
-                this._time += this.watcherSpeed;
-
-                /** TODO (Jordan Turner - 2020-10-10: Check if an HCS event has occured */
-            })
-        );
+        this.watcher$ = interval(this.watcherSpeed).pipe(tap(this.onInterval));
 
         // Start the interval & capture the subscription so that we can stop the interval at a later
         // point in time.
@@ -79,4 +72,15 @@ export class MatchWatcher {
      * Private Functions
      *
      */
+
+    /** Helper function used to handle tasks of the HCS match watcher each time a new interval
+     * occurs.
+     * @param {number} count The number of intervals that have occured since the interval was started
+     */
+    private onInterval = (count: number): void => {
+        // Increase the time that has elapsed in the HCS match
+        this._time += this.watcherSpeed;
+
+        /** TODO (Jordan Turner - 2020-10-10: Check if an HCS event has occured */
+    };
 }
