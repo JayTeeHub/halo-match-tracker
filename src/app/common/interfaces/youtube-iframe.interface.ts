@@ -52,10 +52,18 @@ interface ConstructablePlayer<YouTubeIframePlayer> {
     new (playerHtmlId: string, playerOptions: PlayerOptions): YouTubeIframePlayer;
 }
 
-/** Paramteres that allow you to access and control the instance of a YouTube iframe Player. */
+/**
+ * Paramteres that allow you to access and control the instance of a YouTube iframe Player.
+ * @param {boolean} allowSeekAhead Setting this to true means the player will make a new request to
+ *                                 the server if the seconds parameter specifies a time outside of
+ *                                 the currently buffered video data.
+ */
 export interface YouTubeIframePlayer {
     /** Access the current time of the video being played */
     getCurrentTime(): number;
+
+    /** Seeks to a specified time in the video. This is only ever called when the app is in debug mode. */
+    seekTo(seconds: number, allowSeekAhead: boolean): void;
 }
 
 /** All methods & parameters availabe to a YouTube iframe instance after the API has been loaded. */
