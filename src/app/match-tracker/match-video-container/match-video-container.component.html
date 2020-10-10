@@ -1,0 +1,6 @@
+<!-- Used by the YouTube iframe API to load a YouTube video in the UI -->
+<div id="player"></div>
+
+<ng-container *ngIf="isDevMode">
+    <input type="text" id="skipToTimeInput" (keypress)="onKeyDownSetTime($event)" />
+</ng-container>

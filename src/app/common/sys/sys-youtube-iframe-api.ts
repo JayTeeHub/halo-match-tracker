@@ -1,15 +1,7 @@
-/*
- *
- * Dependencies
- *
- */
+/** Dependencies */
 import { YouTubeIframe, YouTubeIframePlayer } from '../interfaces/youtube-iframe.interface';
 
-/*
- *
- * Third-Party Dependencies
- *
- */
+/** Third-Party Dependencies */
 import { Observable, Subscriber } from 'rxjs';
 
 /*
@@ -33,6 +25,7 @@ export interface ApiConfig {
      * PAUSED, PLAYING, ENDED, etc...). */
     onStateChangeEvent: Function;
 }
+
 /** System level service that is used to load and mointor a YouTube player in the API throught the
  * YouTube iframe API. */
 export class SysYouTubeIframeApi {
