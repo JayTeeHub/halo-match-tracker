@@ -81,6 +81,6 @@ export class MatchWatcher {
         // Increase the time that has elapsed in the HCS match
         this._time += this.watcherSpeed;
 
-        /** TODO (Jordan Turner - 2020-10-10: Check if an HCS event has occured */
+        /** TODO (Jordan Turner - 2020-10-10: Check if an event has occured in the HCS match */
     };
 }
