@@ -25,7 +25,8 @@ export class MatchWatcher {
     private watcherSubscription: Subscription;
 
     /** Frequency of when to check for new HCS match events and increases total time passed in the
-     * HCS match. Value is in seconds. */
+     * HCS match. Value is in seconds. This value matches the frequency at which the YouTube iframe
+     * updates its time. */
     private readonly watcherSpeed: number = 0.83;
 
     /** Amount of time, in seconds, that has elapsed in the HCS match. Used to check if HCS match events are
@@ -62,7 +63,10 @@ export class MatchWatcher {
     };
 
     /** Pause the HCS match watcher */
-    public pause = (): void => {};
+    public pause = (): void => {
+        /** TODO (Jordan Turner - 2020-10-10: Assign the watcher$ to NEVER so that we can pause the
+         * interval */
+    };
 
     /** Stop the HCS match watcher */
     public stop = (): void => {};
