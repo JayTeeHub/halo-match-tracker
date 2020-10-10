@@ -36,6 +36,7 @@ describe('MatchWatcher', () => {
         clock.install();
 
         matchWatcher.start();
+        spyOn(matchWatcher['watcherSubscription'], 'unsubscribe');
         clock.tick(intervalPeriod);
 
         // Act
@@ -44,7 +45,7 @@ describe('MatchWatcher', () => {
 
         // Assert
         expect(matchWatcher.time).toEqual(intervalPeriod);
-        expect(matchWatcher['watcher$']).toEqual(NEVER);
+        expect(matchWatcher['watcherSubscription'].unsubscribe).toHaveBeenCalled();
 
         // Stop the interval on the watcher and stop the jasmine clock
         matchWatcher['watcherSubscription'].unsubscribe();
