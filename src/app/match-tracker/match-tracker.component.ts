@@ -14,7 +14,7 @@ import { Component, OnInit } from '@angular/core';
  */
 
 /** Parent component for Match Tracker. This provides a high-level, container, UI for which HCS
- * video and stats (childern) will live in. */
+ * video and stats (children) will live in. */
 @Component({
     selector: 'match-tracker',
     templateUrl: './match-tracker.component.html',
@@ -48,7 +48,7 @@ export class MatchTrackerComponent implements OnInit {
 
     /*
      *
-     * Initalization
+     * Initialization
      *
      */
     ngOnInit(): void {}
